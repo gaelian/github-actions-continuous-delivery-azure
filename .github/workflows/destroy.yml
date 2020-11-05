@@ -1,6 +1,6 @@
 name: Destroy Azure environment
 
-on: ['workflow_dispatch']
+on: workflow_dispatch
 
 env:
   AZURE_RESOURCE_GROUP: cd-with-actions
