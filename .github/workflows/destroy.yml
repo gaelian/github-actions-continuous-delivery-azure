@@ -1,0 +1,31 @@
+name: Destroy Azure environment
+
+on: ['workflow_dispatch']
+
+env:
+  AZURE_RESOURCE_GROUP: cd-with-actions
+  #################################################
+  ### USER PROVIDED VALUES ARE REQUIRED BELOW   ###
+  #################################################
+  #################################################
+  ### REPLACE USERNAME WITH GH USERNAME         ###
+  AZURE_WEBAPP_NAME: gaelian-ttt-app
+  #################################################
+
+jobs:
+  destroy-azure-resources:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Destroy Azure environment
+        if: success()
+        run: |
+          az group delete --name ${{env.AZURE_RESOURCE_GROUP}} --subscription ${{secrets.AZURE_SUBSCRIPTION_ID}} --yes
